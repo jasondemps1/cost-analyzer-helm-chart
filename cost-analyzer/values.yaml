@@ -182,6 +182,7 @@ systemProxy:
 # - name: "image-pull-secret"
 
 kubecostFrontend:
+  enabled: true
   image: "gcr.io/kubecost1/frontend"
   imagePullPolicy: Always
   resources:

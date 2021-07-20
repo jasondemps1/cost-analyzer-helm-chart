@@ -594,16 +594,13 @@ spec:
                 configMapKeyRef:
                   name: {{ template "cost-analyzer.fullname" . }}
                   key: kubecost-token
-        {{- if .Values.kubecostFrontend }}
+        {{- if and .Values.kubecostFrontend .Values.kubecostFrontend.enabled }}
         {{- if .Values.kubecostFrontend.fullImageName }}
         - image: {{ .Values.kubecostFrontend.fullImageName }}
         {{- else if .Values.imageVersion }}
         - image: {{ .Values.kubecostFrontend.image }}:{{ .Values.imageVersion }}
         {{- else }}
         - image: {{ .Values.kubecostFrontend.image }}:prod-{{ $.Chart.AppVersion }}
-        {{ end }}
-        {{- else }}
-        - image: gcr.io/kubecost1/frontend:prod-{{ $.Chart.AppVersion }}
         {{ end }}
           {{- if .Values.kubecostFrontend.tls }}
           {{- if .Values.kubecostFrontend.tls.enabled }}
@@ -639,6 +636,7 @@ spec:
             initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 200
+        {{- end }}
         {{- if .Values.kubecost }}
         {{- if .Values.kubecost.fullImageName }}
         - image: {{ .Values.kubecost.fullImageName }}
